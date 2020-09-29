@@ -20,14 +20,14 @@
     </mat-card>
   </div>
 
-  <div fxFlex="40">
+  <div *ngIf="dish" fxFlex="40">
     <div class="container" fxLayout="column" fxLayoutGap="10px">
       <div fxFlex>
         <div>
           <h2>Comments</h2>
         </div>
       </div>
-      <mat-list *ngIf="dish" fxFlex>
+      <mat-list fxFlex>
         <mat-list-item *ngFor="let comment of dish.comments">
           <p matLine>
             {{comment.comment}}
