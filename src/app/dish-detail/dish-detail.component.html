@@ -1,4 +1,3 @@
-
 <!--
   dish-detail.component.css
   .full-width {
@@ -70,10 +69,17 @@
     </div>
   </div>
 
-  <div [hidden]="dish">
+  <div [hidden]="dish || errMess">
     <mat-spinner></mat-spinner>
     <h4>Loading . . . Please Wait</h4>
   </div>
+  <div fxFlex *ngIf="errMess">
+    <h2>Error</h2>
+    <h4>{{errMess}}</h4>
+  </div>
+
+
+  <!-- Form comment rating (assignment week 3) -->
 
   <div fxFlex="100" fxLayout="column">
     <div *ngIf="ratingForm.valid" fxFlex="100" fxLayout="column">
