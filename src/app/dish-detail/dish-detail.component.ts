@@ -24,6 +24,8 @@ export class DishDetailComponent implements OnInit {
   prev: string;
   next: string;
 
+  dishcopy: Dish;
+
   errMess: string;
 
   formErrors = {
@@ -46,7 +48,8 @@ export class DishDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private fb: FormBuilder,
-    @Inject("BaseURL") private baseURL) {
+    @Inject("BaseURL") private baseURL,
+    private dishService: DishService) {
     this.createForm();
   }
 
@@ -68,8 +71,11 @@ export class DishDetailComponent implements OnInit {
       errmess => this.errMess = <any>errmess);
     this.route.params.pipe(
       switchMap((params: Params) => this.dishservice.getDish(params['id']))
-    )
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+    ).subscribe(dish => {
+      this.dish = dish;
+      this.dishcopy = dish;
+      this.setPrevNext(dish.id);
+    }, errmess => this.errMess = <any>errmess);
   }
 
   onSubmit() {
@@ -83,7 +89,18 @@ export class DishDetailComponent implements OnInit {
         comment: ''
       });
 
-      this.dish.comments.push(this.rating);
+      this.dishcopy.comments.push(this.rating);
+
+      this.dishService.putDish(this.dishcopy)
+        .subscribe(dish => {
+          this.dish = dish;
+          this.dishcopy = dish;
+        }, errmess => {
+          this.dish = null;
+          this.dishcopy = null;
+          this.errMess = <any>errmess;
+        });
+
     }
   }
 
