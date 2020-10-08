@@ -14,14 +14,14 @@
 <div class="container" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column"
   fxLayoutAlign.gt-md="space-around center" fxLayoutGap="10px" fxLayoutGap.xs="0">
 
-  <div fxFlex="100">
+  <div fxFlex="100" [@expand]>
     <div>
       <h3 *ngIf="dish">{{dish.name | uppercase}}</h3>
       <hr>
     </div>
   </div>
 
-  <div *ngIf="dish" fxFlex="40" [@visibility]="visibility">
+  <div *ngIf="dish" fxFlex="40" [@visibility]="visibility" [@expand]>
     <mat-card>
       <mat-card-header>
         <mat-card-title>
@@ -46,7 +46,7 @@
     </mat-card>
   </div>
 
-  <div *ngIf="dish" fxFlex="40" [@visibility]="visibility">
+  <div *ngIf="dish" fxFlex="40" [@visibility]="visibility" [@expand]>
     <div class="container" fxLayout="column" fxLayoutGap="10px">
       <div fxFlex>
         <div>
