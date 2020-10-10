@@ -20,12 +20,14 @@ export class AboutComponent implements OnInit {
 
   leaders: Leader[];
 
+  leaderErrMess: string;
+
   constructor(private leadersService: LeaderService,
     @Inject("BaseURL") private baseURL) { }
 
   ngOnInit() {
-    this.leadersService.getLeaders()
-      .subscribe(leaders => this.leaders = leaders);
+    this.leadersService.getLeaders().subscribe(leaders => this.leaders = leaders,
+      errmess => this.leaderErrMess = <any>errmess);
   }
 
 }

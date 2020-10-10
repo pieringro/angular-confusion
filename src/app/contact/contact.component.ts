@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { flyInOut } from '../animations/app.animation';
+import { flyInOut, expand } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
 
 import { Feedback, ContactType } from '../shared/feedback';
 
@@ -13,7 +14,8 @@ import { Feedback, ContactType } from '../shared/feedback';
     'style': 'display: block;'
   },
   animations: [
-    flyInOut()
+    flyInOut(),
+    expand()
   ]
 })
 export class ContactComponent implements OnInit {
@@ -23,6 +25,9 @@ export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
   contactType = ContactType;
+
+  feedbackSubmitted: Feedback;
+  feedbackErrMess: string;
 
   formErrors = {
     'firstname': '',
@@ -52,7 +57,8 @@ export class ContactComponent implements OnInit {
     },
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private feedbackService: FeedbackService) {
     this.createForm();
   }
 
@@ -97,8 +103,21 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     if (this.feedbackForm.valid) {
-      this.feedback = this.feedbackForm.value;
-      console.log(this.feedback);
+      this.feedbackSubmitted = this.feedbackForm.value;
+      console.log(this.feedbackSubmitted);
+      this.feedbackService.submitFeedback(this.feedbackSubmitted)
+        .subscribe(feedback => {
+          console.log(feedback);
+          this.feedback = feedback;
+          setTimeout(() => {
+            this.feedback = null;
+            this.feedbackSubmitted = null;
+          }, 5000);
+        }, errmess => {
+          console.log(errmess);
+          this.feedbackErrMess = errmess;
+        });
+
       this.feedbackForm.reset({
         firstname: '',
         lastname: '',
@@ -108,7 +127,7 @@ export class ContactComponent implements OnInit {
         contacttype: 'None',
         message: ''
       });
-      this.feedbackFormDirective.resetForm();
+      // this.feedbackFormDirective.resetForm();
     }
   }
 
