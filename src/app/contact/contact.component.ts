@@ -109,6 +109,17 @@ export class ContactComponent implements OnInit {
         .subscribe(feedback => {
           console.log(feedback);
           this.feedback = feedback;
+
+          this.feedbackForm.reset({
+            firstname: '',
+            lastname: '',
+            telnum: '',
+            email: '',
+            agree: false,
+            contacttype: 'None',
+            message: ''
+          });
+
           setTimeout(() => {
             this.feedback = null;
             this.feedbackSubmitted = null;
@@ -117,17 +128,6 @@ export class ContactComponent implements OnInit {
           console.log(errmess);
           this.feedbackErrMess = errmess;
         });
-
-      this.feedbackForm.reset({
-        firstname: '',
-        lastname: '',
-        telnum: '',
-        email: '',
-        agree: false,
-        contacttype: 'None',
-        message: ''
-      });
-      // this.feedbackFormDirective.resetForm();
     }
   }
 
